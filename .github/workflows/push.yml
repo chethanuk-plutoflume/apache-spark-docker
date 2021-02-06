@@ -1,0 +1,29 @@
+name: Publish Docker
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - name: Publish PySpark 3 with reqs to Registry
+      uses: elgohr/Publish-Docker-Github-Action@master
+      with:
+        name: chethan/spark
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+        workdir: ./3/pyspark  
+        cache: ${{ github.event_name != 'schedule' }}
+        no_push: ${{ github.event_name == 'push' }}
+        # dockerfile: Dockerfile
+
+    - name: Publish PySpark 3 with reqs to Registry
+      uses: elgohr/Publish-Docker-Github-Action@master
+      with:
+        name: chethan/spark
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+        workdir: ./3/base
+        cache: ${{ github.event_name != 'schedule' }}
+        no_push: ${{ github.event_name == 'push' }}
+        # buildargs: python, hadoop3
+        # dockerfile: Dockerfile
